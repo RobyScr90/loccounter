@@ -17,6 +17,7 @@ public class JavaAnalyzer {
         System.out.println("Total LoC : " + totalLinesOfCode.toString());
     }
 
+    //TODO refactor java counter method
     private static Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
         Consumer<File> linesOfCodeConsumer = (File inFile) -> {
             BufferedReader br = null;

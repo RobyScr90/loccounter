@@ -6,3 +6,5 @@ deploy/
 target/
 
 *.iml
+
+.DS_Store
