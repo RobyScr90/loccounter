@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 
 public class Analyzer {
 
+    private static final String JAVA = "java";
+
     public static void analyzeFiles(String startDirectory, String[] extensions) {
         Arrays.stream(extensions).iterator().forEachRemaining(callExtensionAnalyzer(startDirectory));
     }
@@ -12,7 +14,7 @@ public class Analyzer {
     private static Consumer<String> callExtensionAnalyzer(String startDirectory) {
         return (String extension) -> {
             switch (extension) {
-                case "java":
+                case JAVA:
                     JavaAnalyzer.countLines(startDirectory, new String[]{extension});
                     break;
                 default:
