@@ -1,4 +1,4 @@
-package it.rscaramozza.tools.loccounter.analizer;
+package it.rscaramozza.tools.loccounter.analyzer;
 
 import it.rscaramozza.tools.loccounter.files.FileUtility;
 
@@ -9,27 +9,24 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class JavaAnalyzer {
+public class JavaAnalyzer implements IFileAnalyzer{
 
-    public static void countLines(String startDirectory, String[] extensions){
+    public void countLines(String startDirectory, String[] extensions){
         AtomicInteger totalLinesOfCode = new AtomicInteger();
         FileUtility.searchFilesToAnalize(startDirectory, extensions).forEach(linesOfCodeConsumer(totalLinesOfCode));
         System.out.println("Total LoC : " + totalLinesOfCode.toString());
     }
 
     //TODO refactor java counter method
-    private static Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
+    private Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
         Consumer<File> linesOfCodeConsumer = (File inFile) -> {
-            BufferedReader br = null;
+            //BufferedReader br = null;
             String sCurrentLine = null;
             String func = null;
 
             int a = 0, b = 0, c = 0, k = 0;
 
-            try {
-                // passing the text file location for FileReader.
-                br = new BufferedReader(new FileReader(inFile));
-
+            try(BufferedReader br = new BufferedReader(new FileReader(inFile))) {
                 // Looping through the text file
                 while ((sCurrentLine = br.readLine()) != null) {
                     // avoid multi-line comments and one line comments and new lines.
@@ -71,15 +68,6 @@ public class JavaAnalyzer {
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                try {
-                    // close bufferReader
-                    if (br != null) {
-                        br.close();
-                    }
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
             }
         };
 
