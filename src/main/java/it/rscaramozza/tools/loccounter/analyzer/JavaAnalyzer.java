@@ -1,7 +1,5 @@
 package it.rscaramozza.tools.loccounter.analyzer;
 
-import it.rscaramozza.tools.loccounter.files.FileUtility;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,16 +7,11 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class JavaAnalyzer implements IFileAnalyzer{
-
-    public void countLines(String startDirectory, String[] extensions){
-        AtomicInteger totalLinesOfCode = new AtomicInteger();
-        FileUtility.searchFilesToAnalize(startDirectory, extensions).forEach(linesOfCodeConsumer(totalLinesOfCode));
-        System.out.println("Total LoC : " + totalLinesOfCode.toString());
-    }
+public class JavaAnalyzer extends FileAnalyzer{
 
     //TODO refactor java counter method
-    private Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
+    @Override
+    protected Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
         Consumer<File> linesOfCodeConsumer = (File inFile) -> {
             //BufferedReader br = null;
             String sCurrentLine = null;
@@ -30,12 +23,7 @@ public class JavaAnalyzer implements IFileAnalyzer{
                 // Looping through the text file
                 while ((sCurrentLine = br.readLine()) != null) {
                     // avoid multi-line comments and one line comments and new lines.
-                    if (sCurrentLine.trim().startsWith("/*")
-                            || sCurrentLine.trim().startsWith("*")
-                            || sCurrentLine.trim().endsWith("*/")
-                            || sCurrentLine.trim().startsWith("//")
-                            || sCurrentLine.trim().isEmpty()
-                            || (sCurrentLine.trim().matches("[{};]+"))) {
+                    if (excludeLine(sCurrentLine)) {
                         // count the number of comment lines and new lines to exclude it from count.
                         b++;
                         // Getting any function in the text file that start and end with ().
@@ -72,5 +60,14 @@ public class JavaAnalyzer implements IFileAnalyzer{
         };
 
         return linesOfCodeConsumer;
+    }
+
+    private boolean excludeLine(String sCurrentLine) {
+        return sCurrentLine.trim().startsWith("/*")
+                || sCurrentLine.trim().startsWith("*")
+                || sCurrentLine.trim().endsWith("*/")
+                || sCurrentLine.trim().startsWith("//")
+                || sCurrentLine.trim().isEmpty()
+                || (sCurrentLine.trim().matches("[{};]+"));
     }
 }

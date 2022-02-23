@@ -9,16 +9,11 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class XmlAnalyzer implements IFileAnalyzer{
-
-    public void countLines(String startDirectory, String[] extensions){
-        AtomicInteger totalLinesOfCode = new AtomicInteger();
-        FileUtility.searchFilesToAnalize(startDirectory, extensions).forEach(linesOfCodeConsumer(totalLinesOfCode));
-        System.out.println("Total LoC : " + totalLinesOfCode.toString());
-    }
+public class XmlAnalyzer extends FileAnalyzer{
 
     //TODO refactor java counter method
-    private Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
+    @Override
+    protected Consumer<File> linesOfCodeConsumer(AtomicInteger totalLinesOfCode) {
         Consumer<File> linesOfCodeConsumer = (File inFile) -> {
             //BufferedReader br = null;
             String sCurrentLine = null;
