@@ -14,7 +14,7 @@ public class Analyzer {
     }
 
     public static void analyzeFiles(String startDirectory, String[] extensions) {
-        Arrays.stream(extensions).iterator().forEachRemaining(callExtensionAnalyzer(startDirectory));
+        Arrays.stream(extensions).forEach(callExtensionAnalyzer(startDirectory));
     }
 
     private static Consumer<String> callExtensionAnalyzer(String startDirectory) {

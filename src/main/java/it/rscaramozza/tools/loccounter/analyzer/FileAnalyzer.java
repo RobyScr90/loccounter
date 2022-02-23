@@ -10,7 +10,7 @@ public abstract class FileAnalyzer implements IFileAnalyzer{
 
     public void countLines(String startDirectory, String[] extensions){
         AtomicInteger totalLinesOfCode = new AtomicInteger();
-        FileUtility.searchFilesToAnalize(startDirectory, extensions).forEach(linesOfCodeConsumer(totalLinesOfCode));
+        FileUtility.searchFilesToAnalyze(startDirectory, extensions).forEach(linesOfCodeConsumer(totalLinesOfCode));
         System.out.println("Total LoC : " + totalLinesOfCode);
     }
 
