@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_FILE" value="/var/share/logs/loc-counter.log"/>
+    <property name="ROLLING_LOG_FILE" value="/var/share/logs/loc-counter.%d{yyyy-MM-dd}.log.gz"/>
+    <property name="ROLLING_MAX_HISTORY" value="30"/>
+    <property name="PATTERN_LOG" value="%d{ISO8601} | %-5level | %-15.15thread | %-34.34logger{34} | --> %msg %ex%n"/>
+    <property name="DEFAULT_APPENDER" value="CONSOLE"/>
+    <property name="DEFAULT_LEVEL" value="INFO"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>${PATTERN_LOG}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ROLLING_LOG_FILE}</fileNamePattern>
+            <maxHistory>${ROLLING_MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_LOG}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="${DEFAULT_LEVEL}">
+        <appender-ref ref="${DEFAULT_APPENDER}"/>
+    </root>
+</configuration>
